@@ -1,0 +1,240 @@
+FORMAT: A1
+HOST: http://localhost:8080
+
+# MyEssen
+
+Was und wie essen wir?
+My Essen ein einfaches webapp ist, wo du info uber Zutaten un Rezepten finden kann!
+Man kann die Dokumentation finden auf [Apiary](https://duriansosa.docs.apiary.io).
+
+# MyEssen API root [/]
+
+Mit der Wurzel unseres API, du kannst die verschiedene Verbindungen unseres App finden!
+    
+
+## Get Entry Point [GET]
+
++ Response 200 (application/json)
+
+        {
+            "food":"/api/food",
+            "users":"/api/users"
+        }
+
+## Authentication Register [/auth/register]
+
+### Register [POST]
+
++ Request Login into your account
+    
+        + Headers
+            
+                Accept: application/json
+                Content-Type: application/json; charset=utf-8
+                
+    + Attributes (User)
+    
++ Response 200 (application/json)
+
+    + Attributes (CreatedUser)
+
++ Response 409 (Error)
+
+    + Attributes (AlreadyExistsError)
+    
+
+# Authentication Login [auth/login]
+
+## Login [POST]
+
+
++ Request Login into your account
+    
+        + Headers
+            
+                Accept: application/json
+                Content-Type: application/json; charset=utf-8
+                
+    + Attributes (LoginRequest)
+    
++ Response 200 (application/json)
+    
+    + Attributes (LoginResponse)
+
+## Get Current User [GET]
+
++ Request getting current user
+        
+            + Headers
+            
+                    Authorization: mytoken
+                    Accept: application/json
+                    Content-Type: application/json; charset=utf-8
+    
++ Response 200 (application/json)
+    
+    + Attributes (LoginResponse)
+    
++ Response 401 (Error)
+
+    + Attributes (UnauthorizedError)
+    
+
+# All Foods [api/food]
+
+## Get Foods [GET]
+
+
++ Response 200 (application/json)
+    
+        [
+            {
+                "name": "Banana",
+                "kcal": 89,
+                "price": 10,
+                "image": "empty",
+                "description": "creamy"
+            },
+            {
+                "name": "Apple",
+                "kcal": 50,
+                "price": 5,
+                "image": "empty",
+                "description": "juicy"
+            },
+            {
+                "name": "Lemon",
+                "kcal": 12,
+                "price": 15,
+                "image": "empty",
+                "description": "acid"
+            }
+
+        ]
+        
++ Response 404 (application/json)
+    + Attributes (NotFoundError)
+
+## Create Food [POST]
+
++ Request Ein essen zu erstellen
+
+    + Headers 
+
+            Authorization: mytoken
+            Accept: application/json
+            content-type: application/json; charset=utf-8
+    + Attributes (Food)
+
++ Response 201 (application/json)
+    + Attributes (CreatedFood)
+
++ Response 409 (Error)
+    + Attributes (AlreadyExistsError)
+        
+
+# Individual Food [/api/food/{id}]
+
+A Food object has the following attributes:
+
++ name
++ kcal
++ price
++ image
++ description
+
++ Parameters 
+
+    + id: 1 (number, required) - The id of the food we will interact with
+
+
+## Get a Food [GET]
+
++ Request Ein Essen zu erhalten
+
+    + Headers 
+
+            Accept: application/json
+            Content-Type: application/json
+
++ Response 200 (application/json)
+    + Attributes (CreatedFood)
+    
++ Response 404 (application/json)
+    + Attributes (NotFoundError)
+
+## Edit a Food [PUT]
+
++ Request Edit a Food 
+
+        + Headers
+
+            Authorization: mytoken
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (Food)
+
++ Response 200 (application/json)
+    + Attributes (EditedFood)
+
++ Response 404 (application/json)
+    + Attributes (NotFoundError)
+
+## Delete a Food [DELETE]
++ Response 204 (application/json)
++ Response 404 (application/json)
+    + Attributes (NotFoundError)
+
+
+# Data Structures
+
+## User (object)
++ username: Drev (string)
++ email: drev@test.com (string)
++ password: fake123 (string)
++ bio: myBio (string)
++ role: ADMIN (string)  
+
+## LoginRequest (object)
++ login: myUsername (string)
++ password: fake123 (string)
+
+## LoginResponse (object)
++ token: mytoken (string)
++ loggedUser: (User)
+
+## CreatedUser (User)
++ id: 2 (number)
+
+## Food (object)
++ name: Banana (string)
++ kcal: 89 (number)
++ price: 10 (number)
++ image: empty (string)
++ description: creamy (string)
+
+## EditedFood (Food) 
++ name: Banana da Madeira (string)
++ id: 1 (number)
+
+## CreatedFood (Food)
++ id: 1 (number)
+
+
+## Error (object)
++ error: generic error (string)
++ message: An error ocurred (string)
+
+## NotFoundError (Error)
++ error:"Food/User Not Found Exception" (string)
++ message: "This food/user was not found" (string)
+
+## AlreadyExistsError (Error)
+
++ error:"Food/User Already Exists Error" (string)
++ message: "This food/user already exists" (string)
+
+## UnauthorizedError (Error)
+
++ error:"Unauthorized Error" (string)
++ message: "Unauthorized to this resource" (string)

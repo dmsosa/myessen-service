@@ -1,0 +1,1 @@
+ALTER TABLE leben RENAME TO foods;
