@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: myessen-service
+  datasource:
+    password: pepeeselmejor
+    url: jdbc:postgresql://localhost:5432/myessen
+    username: postgres
+application:
+  name: myessen
+server:
+  port: 8082
